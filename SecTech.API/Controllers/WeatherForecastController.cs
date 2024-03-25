@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SecTech.DAL;
 
 namespace SecTech.API.Controllers
 {
@@ -6,6 +7,10 @@ namespace SecTech.API.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+
+        private readonly ApplicationDbContext _context;
+
+
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -13,9 +18,10 @@ namespace SecTech.API.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
