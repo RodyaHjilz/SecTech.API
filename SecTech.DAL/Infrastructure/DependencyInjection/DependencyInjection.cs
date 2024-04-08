@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SecTech.DAL.Repositories;
+using SecTech.Domain.Entity;
 using SecTech.Domain.Interfaces.Repositories;
 
 
@@ -26,7 +27,9 @@ namespace SecTech.DAL.Infrastructure.DependencyInjection
 
         private static void InitRepositories(this IServiceCollection services)
         {
-         
+            services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
+            services.AddScoped<IBaseRepository<Attendance>, BaseRepository<Attendance>>();
+            services.AddScoped<IBaseRepository<Event>, BaseRepository<Event>>();
         }
     }
 }

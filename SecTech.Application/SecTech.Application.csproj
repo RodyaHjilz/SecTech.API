@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SecTech.DAL\SecTech.DAL.csproj" />
+    <ProjectReference Include="..\SecTech.Domain\SecTech.Domain.csproj" />
   </ItemGroup>
 
 </Project>

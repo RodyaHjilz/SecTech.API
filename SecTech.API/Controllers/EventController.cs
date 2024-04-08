@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SecTech.Domain.Dto.Event;
+using SecTech.Domain.Interfaces.Services;
+using SecTech.Domain.Result;
 
 namespace SecTech.API.Controllers
 {
@@ -7,16 +11,28 @@ namespace SecTech.API.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
+        private readonly IEventService _eventService;
+
+        public EventController(IEventService eventService)
+        {
+            _eventService = eventService;
+        }
+
         [HttpGet("List")]
         public IActionResult GetEventsList()
         {
             return Ok();
         }
 
+        [Authorize]
         [HttpPost("Create")]
-        public IActionResult CreateEvent()
+        public async Task<ActionResult<BaseResult<CreateEventDto>>> CreateEvent([FromBody] CreateEventDto dto)
         {
-            return BadRequest();
+            var response = await _eventService.CreateEventAsync(dto);
+            if(response.IsSuccess)
+                return Ok(response);
+
+            return BadRequest(response);
         }
 
         [HttpGet("Get")]

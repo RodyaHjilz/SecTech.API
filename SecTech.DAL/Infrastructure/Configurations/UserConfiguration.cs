@@ -14,7 +14,6 @@ namespace SecTech.DAL.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(128);
             builder.Property(x => x.Email).IsRequired().HasMaxLength(128);
         }
     }

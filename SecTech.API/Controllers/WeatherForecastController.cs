@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SecTech.DAL;
 
@@ -23,7 +24,7 @@ namespace SecTech.API.Controllers
             _logger = logger;
             _context = context;
         }
-
+        [Authorize]
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
