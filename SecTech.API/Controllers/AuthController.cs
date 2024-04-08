@@ -20,6 +20,12 @@ namespace SecTech.API.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Аутентификация пользователя
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         [HttpPost("login")]
         public async Task<ActionResult<BaseResult<Token>>> Login(string email, string password)
         {

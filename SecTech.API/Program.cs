@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using SecTech.Application;
 using SecTech.DAL.Infrastructure.DependencyInjection;
 using System.Text;
@@ -12,7 +13,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Simple QR-code secure system",
+        Description = "Пример ASP .NET Core Web API",
+        Contact = new OpenApiContact
+        {
+            Name = "tg: @bobach4",
+            Url = new Uri("https://t.me/bobach4")
+        }
+    });
+
+    var basePath = AppContext.BaseDirectory;
+
+    var xmlPath = Path.Combine(basePath, "SecTech.API.xml");
+    options.IncludeXmlComments(xmlPath);
+
+});
 builder.Services.AddDataAccessLayer();
 builder.Services.AddServices();
 builder.Services.AddAuthorization();
