@@ -14,14 +14,13 @@ namespace SecTech.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
-
         public AuthController(IUserService userService)
         {
             _userService = userService;
         }
 
         /// <summary>
-        /// Аутентификация пользователя
+        /// Аутентификация пользователя (JWT Cookie)
         /// </summary>
         /// <param name="email"></param>
         /// <param name="password"></param>
@@ -35,6 +34,11 @@ namespace SecTech.API.Controllers
             return Ok(token);
         }
 
+        /// <summary>
+        /// Регистрация пользователя в БД
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPost("register")]
         public async Task<ActionResult<BaseResult<RegisterUserDto>>> Register([FromBody] RegisterUserDto user)
         {
@@ -44,6 +48,12 @@ namespace SecTech.API.Controllers
 
             return BadRequest(response);
         }
+
+
+        /// <summary>
+        /// Инфо об авторизированном пользователе
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         [HttpGet("info")]
         public async Task<ActionResult> GetUserInfo()

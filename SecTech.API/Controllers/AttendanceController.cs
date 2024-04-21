@@ -19,6 +19,11 @@ namespace SecTech.API.Controllers
             _attendanceService = attendanceService;
         }
 
+        /// <summary>
+        /// Посещение event аутентифицированного пользователя
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpGet("checkin")]
         public async Task<ActionResult<BaseResult<Attendance>>> CheckIn(Guid eventId)
@@ -33,6 +38,10 @@ namespace SecTech.API.Controllers
         }
 
 
+        /// <summary>
+        /// Возврат списка посещений аутентифицированного пользователя
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("user")]
         [Authorize]
         public async Task<ActionResult<BaseResult<IEnumerable<Attendance>>>> GetUserAttendances()
@@ -46,15 +55,6 @@ namespace SecTech.API.Controllers
             return BadRequest(response);
 
         }
-
-
-        [HttpPost]
-        public IActionResult Post()
-        {
-            return Ok();
-        }
-
-
 
     }
 }

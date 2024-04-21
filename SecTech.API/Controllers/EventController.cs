@@ -18,12 +18,22 @@ namespace SecTech.API.Controllers
             _eventService = eventService;
         }
 
+        /// <summary>
+        /// Not implemented
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("List")]
         public IActionResult GetEventsList()
         {
             return Ok();
         }
 
+
+        /// <summary>
+        /// Создание мероприятия
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost("Create")]
         public async Task<ActionResult<BaseResult<CreateEventDto>>> CreateEvent([FromBody] CreateEventDto dto)
@@ -35,6 +45,11 @@ namespace SecTech.API.Controllers
             return BadRequest(response);
         }
 
+        /// <summary>
+        /// Not implemented
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("Get")]
         public IActionResult GetEventById(int id)
         {
