@@ -1,6 +1,2 @@
 @SecTech.API_HostAddress = http://localhost:5028
 
-GET {{SecTech.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

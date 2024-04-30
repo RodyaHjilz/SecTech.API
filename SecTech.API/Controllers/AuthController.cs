@@ -29,7 +29,7 @@ namespace SecTech.API.Controllers
         public async Task<ActionResult<BaseResult<Token>>> Login(string email, string password)
         {
             var token = await _userService.Login(email, password);
-
+            if(token.IsSuccess)
             HttpContext.Response.Cookies.Append("token", token.Data.AccessToken);
             return Ok(token);
         }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SecTech.Domain.Dto.Event;
+using SecTech.Domain.Dto.User;
 using SecTech.Domain.Entity;
 using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
@@ -39,12 +41,12 @@ namespace SecTech.API.Controllers
 
 
         /// <summary>
-        /// Возврат списка посещений аутентифицированного пользователя
+        /// Возврат списка посещенных событий аутентифицированного пользователя
         /// </summary>
         /// <returns></returns>
-        [HttpPost("user")]
+        [HttpGet("user")]
         [Authorize]
-        public async Task<ActionResult<BaseResult<IEnumerable<Attendance>>>> GetUserAttendances()
+        public async Task<ActionResult<BaseResult<IEnumerable<AttendedEventDto>>>> GetUserAttendances()
         {
             Guid userId;
             Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out userId);
@@ -55,6 +57,24 @@ namespace SecTech.API.Controllers
             return BadRequest(response);
 
         }
+
+        /// <summary>
+        /// Возврат списка пользователей, посетивших событие
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        [HttpPost("event")]
+        [Authorize]
+        public async Task<ActionResult<BaseResult<IEnumerable<AttendedUserDto>>>> GetUserAttendances(Guid eventId)
+        {
+            var response = await _attendanceService.GetEventAttendancesAsync(eventId); 
+            if (response.IsSuccess)
+                return Ok(response);
+
+            return BadRequest(response);
+
+        }
+
 
     }
 }

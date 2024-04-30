@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SecTech.Domain.Dto.Event;
+using SecTech.Domain.Entity;
 using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
 
@@ -50,11 +51,13 @@ namespace SecTech.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("Get")]
-        public IActionResult GetEventById(int id)
+        [HttpGet("getevent")]
+        public async Task<ActionResult<BaseResult<Event>>> GetEventById(Guid eventId)
         {
-            return Ok();
+            var response = await _eventService.GetEventByIdAsync(eventId);
+            if(response.IsSuccess)
+                return Ok(response);
+            return BadRequest(response);
         }
-
     }
 }
