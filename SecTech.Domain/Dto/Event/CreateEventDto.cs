@@ -1,8 +1,10 @@
-﻿using SecTech.Domain.Enums;
+﻿using SecTech.Domain.Entity;
+using SecTech.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SecTech.Domain.Dto.Event
@@ -16,5 +18,7 @@ namespace SecTech.Domain.Dto.Event
 
         public DateTime EventTimeStart { get; set; } // Начало мероприятия
         public DateTime EventTimeEnd { get; set; } // Конец мероприятия
+
+        public ICollection<string>? AccessedGroups { get; set; }
     }
 }

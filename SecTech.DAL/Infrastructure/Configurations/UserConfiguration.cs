@@ -15,6 +15,11 @@ namespace SecTech.DAL.Infrastructure.Configurations
         {
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Email).IsRequired().HasMaxLength(128);
+
+
+            builder
+                .HasMany(x => x.Groups)
+                .WithMany(x => x.Users);
         }
     }
 }

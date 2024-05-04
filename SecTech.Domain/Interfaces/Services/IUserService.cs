@@ -13,7 +13,5 @@ namespace SecTech.Domain.Interfaces.Services
     {
         Task<BaseResult<User>> Register(string email, string password);
         Task<BaseResult<Token>> Login(string email, string password);
-
-        
     }
 }

@@ -45,7 +45,6 @@ namespace SecTech.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("user")]
-        [Authorize]
         public async Task<ActionResult<BaseResult<IEnumerable<AttendedEventDto>>>> GetUserAttendances()
         {
             Guid userId;

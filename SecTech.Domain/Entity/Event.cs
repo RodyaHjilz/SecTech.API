@@ -1,10 +1,4 @@
 ﻿using SecTech.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace SecTech.Domain.Entity
 {
     public class Event
@@ -16,12 +10,11 @@ namespace SecTech.Domain.Entity
         public EventType Type { get; set; }
         
 
-
-
         public DateTime EventTimeStart { get; set; } // Начало мероприятия
         public DateTime EventTimeEnd { get; set; } // Конец мероприятия
 
 
+        public ICollection<UGroup>? AccessedGroups { get; set; }
         public ICollection<Attendance>? Attendances { get; set; }
     }
 }

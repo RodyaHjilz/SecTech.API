@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SecTech.DAL;
 
@@ -11,9 +12,11 @@ using SecTech.DAL;
 namespace SecTech.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240504112116_initials")]
+    partial class initials
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,31 +83,6 @@ namespace SecTech.DAL.Migrations
                     b.ToTable("Event");
                 });
 
-            modelBuilder.Entity("SecTech.Domain.Entity.UGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("EventId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.ToTable("UGroup");
-                });
-
             modelBuilder.Entity("SecTech.Domain.Entity.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -134,21 +112,6 @@ namespace SecTech.DAL.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("UGroupUser", b =>
-                {
-                    b.Property<int>("GroupsId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("GroupsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("UGroupUser");
-                });
-
             modelBuilder.Entity("SecTech.Domain.Entity.Attendance", b =>
                 {
                     b.HasOne("SecTech.Domain.Entity.Event", "Event")
@@ -168,32 +131,8 @@ namespace SecTech.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SecTech.Domain.Entity.UGroup", b =>
-                {
-                    b.HasOne("SecTech.Domain.Entity.Event", null)
-                        .WithMany("AccessedGroups")
-                        .HasForeignKey("EventId");
-                });
-
-            modelBuilder.Entity("UGroupUser", b =>
-                {
-                    b.HasOne("SecTech.Domain.Entity.UGroup", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SecTech.Domain.Entity.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SecTech.Domain.Entity.Event", b =>
                 {
-                    b.Navigation("AccessedGroups");
-
                     b.Navigation("Attendances");
                 });
 

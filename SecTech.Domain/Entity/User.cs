@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-
+﻿using System.Text.Json.Serialization;
 namespace SecTech.Domain.Entity
 {
     public class User
@@ -16,9 +10,12 @@ namespace SecTech.Domain.Entity
         public string Password { get; set; }
         public string? PhoneNumber { get; set; }
 
+        public ICollection<UGroup>? Groups { get; set; }
 
+        // История посещений пользователя
         [JsonIgnore]
-        public ICollection<Attendance>? Attendances { get; set; } // История посещений пользователя
+        public ICollection<Attendance>? Attendances { get; set; }
         
     }
 }
+

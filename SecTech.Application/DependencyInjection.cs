@@ -17,6 +17,7 @@ namespace SecTech.Application
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IAttendanceService, AttendanceService>();
+            services.AddScoped<IGroupService, GroupService>();
         }
     }
 

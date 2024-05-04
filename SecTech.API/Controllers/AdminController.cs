@@ -2,35 +2,37 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SecTech.Domain.Dto.Event;
-using SecTech.Domain.Entity;
 using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
 
 namespace SecTech.API.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
-    public class EventController : ControllerBase
+    public class AdminController : ControllerBase
     {
         private readonly IEventService _eventService;
-
-        public EventController(IEventService eventService)
+        private readonly IUserService _userService;
+        public AdminController(IEventService eventService, IUserService userService)
         {
             _eventService = eventService;
+            _userService = userService;
         }
 
-
         /// <summary>
-        /// Возврат информации о событии по ID
+        /// Создание мероприятия
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
-        [HttpGet("getevent")]
-        public async Task<ActionResult<BaseResult<Event>>> GetEventById(Guid eventId)
+  
+        [HttpPost("Create")]
+        public async Task<ActionResult<BaseResult<CreateEventDto>>> CreateEvent([FromBody] CreateEventDto dto)
         {
-            var response = await _eventService.GetEventByIdAsync(eventId);
-            if(response.IsSuccess)
+            var response = await _eventService.CreateEventAsync(dto);
+            if (response.IsSuccess)
                 return Ok(response);
+
             return BadRequest(response);
         }
     }

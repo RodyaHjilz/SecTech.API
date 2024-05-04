@@ -19,6 +19,7 @@ namespace SecTech.Application.Services
     public class UserService : IUserService
     {
         private readonly IBaseRepository<User> _userRepository;
+        
 
         public UserService(IBaseRepository<User> userRepository)
         {
@@ -41,7 +42,9 @@ namespace SecTech.Application.Services
 
                 var claims = new List<Claim> { 
                     new Claim(ClaimTypes.Email, email),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, "User"),
+                    new Claim(ClaimTypes.Role, "Admin")
                 };
                 var jwt = new JwtSecurityToken(
                 issuer: "SecTech",

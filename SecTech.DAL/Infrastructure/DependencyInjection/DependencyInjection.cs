@@ -30,6 +30,7 @@ namespace SecTech.DAL.Infrastructure.DependencyInjection
             services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
             services.AddScoped<IBaseRepository<Attendance>, BaseRepository<Attendance>>();
             services.AddScoped<IBaseRepository<Event>, BaseRepository<Event>>();
+            services.AddScoped<IBaseRepository<UGroup>, BaseRepository<UGroup>>();
         }
     }
 }

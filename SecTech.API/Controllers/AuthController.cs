@@ -26,12 +26,15 @@ namespace SecTech.API.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpPost("login")]
-        public async Task<ActionResult<BaseResult<Token>>> Login(string email, string password)
+        public async Task<ActionResult<BaseResult<Token>>> Login([FromBody] LoginUserDto user)
         {
-            var token = await _userService.Login(email, password);
-            if(token.IsSuccess)
-            HttpContext.Response.Cookies.Append("token", token.Data.AccessToken);
-            return Ok(token);
+            var token = await _userService.Login(user.Email, user.Password);
+            if (token.IsSuccess)
+            {
+                HttpContext.Response.Cookies.Append("token", token.Data.AccessToken);
+                return Ok(token);
+            }
+            return BadRequest(token);
         }
 
         /// <summary>
