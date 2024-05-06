@@ -54,7 +54,7 @@ namespace SecTech.API.Controllers
 
 
         /// <summary>
-        /// Инфо об авторизированном пользователе
+        /// Инфо об авторизированном пользователе (Не нужно)
         /// </summary>
         /// <returns></returns>
         [Authorize]

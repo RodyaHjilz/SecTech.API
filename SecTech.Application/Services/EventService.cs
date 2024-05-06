@@ -33,6 +33,7 @@ namespace SecTech.Application.Services
                 {   Address = eventDto.Address,
                     Description = eventDto.Description, 
                     Name = eventDto.Name,
+                    Type = eventDto.Type,
                     EventTimeEnd = eventDto.EventTimeEnd,
                     EventTimeStart = eventDto.EventTimeStart
                 };

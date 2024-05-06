@@ -27,7 +27,7 @@ namespace SecTech.API.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("checkin")]
+        [HttpGet("checkin/{eventId}")]
         public async Task<ActionResult<BaseResult<Attendance>>> CheckIn(Guid eventId)
         {
             Guid userId;
@@ -57,22 +57,7 @@ namespace SecTech.API.Controllers
 
         }
 
-        /// <summary>
-        /// Возврат списка пользователей, посетивших событие
-        /// </summary>
-        /// <param name="eventId"></param>
-        /// <returns></returns>
-        [HttpPost("event")]
-        [Authorize]
-        public async Task<ActionResult<BaseResult<IEnumerable<AttendedUserDto>>>> GetUserAttendances(Guid eventId)
-        {
-            var response = await _attendanceService.GetEventAttendancesAsync(eventId); 
-            if (response.IsSuccess)
-                return Ok(response);
-
-            return BadRequest(response);
-
-        }
+        
 
 
     }
