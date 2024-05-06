@@ -10,6 +10,7 @@ namespace SecTech.Domain.Entity
         public string Password { get; set; }
         public string? PhoneNumber { get; set; }
 
+        [JsonIgnore]
         public ICollection<UGroup>? Groups { get; set; }
 
         // История посещений пользователя

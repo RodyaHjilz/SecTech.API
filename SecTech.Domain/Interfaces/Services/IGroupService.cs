@@ -7,7 +7,7 @@ namespace SecTech.Domain.Interfaces.Services
 {
     public interface IGroupService
     {
-        Task<BaseResult<UGroup>> CreateGroup(CreateGroupDto group);
-        Task<BaseResult<UGroup>> AddUserToGroup(string userEmail, string groupName);
+        Task<BaseResult<UGroupDto>> CreateGroup(UGroupDto group);
+        Task<BaseResult<UGroupDto>> AddUserToGroup(string userEmail, string groupName);
     }
 }

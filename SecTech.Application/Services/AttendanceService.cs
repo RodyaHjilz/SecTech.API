@@ -5,6 +5,7 @@ using SecTech.Domain.Entity;
 using SecTech.Domain.Interfaces.Repositories;
 using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
+using SecTech.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,34 @@ namespace SecTech.Application.Services
     public class AttendanceService : IAttendanceService
     {
         private readonly IBaseRepository<Attendance> _attendanceRepository;
-
-        public AttendanceService(IBaseRepository<Attendance> attendanceRepository)
+        private readonly IBaseRepository<Event> _eventRepository;
+        private readonly IBaseRepository<User> _userRepository;
+        public AttendanceService(IBaseRepository<Attendance> attendanceRepository, IBaseRepository<Event> eventRepository, IBaseRepository<User> userRepository)
         {
             _attendanceRepository = attendanceRepository;
+            _eventRepository = eventRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<BaseResult<Attendance>> CheckInAsync(Guid userId, Guid eventId)
         {
             try
             {
+                var ev = await _eventRepository.GetAll().FirstOrDefaultAsync(x=>x.Id == eventId);
+                var user = await _userRepository.GetAll().FirstOrDefaultAsync(x=>x.Id == userId);
+
+                if(ev == null) { return new BaseResult<Attendance>() { ErrorMessage = "Event not found" }; }
+                if(user == null) { return new BaseResult<Attendance>() { ErrorMessage = "User not found" }; }
+                
+                // Если событие доступно только определенным группам, то проверить наличие группы у user
+                if(ev.Type == EventType.EVENT_GROUPACCESSED)
+                {
+                    bool hasMatchingGroup = false;
+                    if (ev.AccessedGroups != null && user.Groups != null)
+                        hasMatchingGroup = ev.AccessedGroups.Any(ga => user.Groups.Any(ug=> ug.Id == ga.Id));
+
+                    if(!hasMatchingGroup) { return new BaseResult<Attendance>() { ErrorMessage = "User has no access [GROUP]" }; }
+                }
 
                 var isUserCheckedIn = _attendanceRepository.GetAll().Any(x => x.UserId == userId && x.EventId == eventId);
                 if(isUserCheckedIn)
@@ -76,7 +95,9 @@ namespace SecTech.Application.Services
                     .Where(x => x.EventId == eventId)
                     .Include(x => x.User)
                     .ToListAsync();
-
+                if (attendances == null)
+                    return new BaseResult<IEnumerable<AttendedUserDto>>()
+                    { ErrorMessage = $"There is no user attendances", ErrorCode = 1 };
                 var users = attendances.Select(x => new AttendedUserDto()
                 {
                     Id = x.UserId,
@@ -84,9 +105,7 @@ namespace SecTech.Application.Services
                     Email = x.User.Email,
                     PhoneNumber = x.User.PhoneNumber != null ? x.User.PhoneNumber : "Без номера телефона"
                 });
-                if (attendances == null)
-                    return new BaseResult<IEnumerable<AttendedUserDto>>()
-                    { ErrorMessage = $"There is no user attendances", ErrorCode = 1 };
+                
                 return new BaseResult<IEnumerable<AttendedUserDto>>() { Data = users };
             }
             catch(Exception ex)
