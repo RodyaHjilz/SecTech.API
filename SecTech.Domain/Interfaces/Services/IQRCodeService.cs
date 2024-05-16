@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SecTech.Domain.Result;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace SecTech.Domain.Interfaces.Services
 {
     public interface IQRCodeService
     {
-        string GenerateQRCode(int eventId);
-        int DecodeQRCode(string qrCodeData);
+        string GenerateQRCode(Guid eventId);
+        BaseResult<Guid> DecodeQRCode(string tokenString);
     }
 }

@@ -18,6 +18,7 @@ namespace SecTech.Application
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IAttendanceService, AttendanceService>();
             services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<IQRCodeService, QRCodeService>();
         }
     }
 
