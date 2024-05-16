@@ -1,5 +1,7 @@
 # API QR-CODE secure system
 
+Clean Architecture
+
 ## Основная идея:
 Автоматизация процесса контроля доступа к мероприятиям.
 
