@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SecTech.Domain.Dto.User
 {
-    public record LoginUserDto(
+    public record AuthUserDto(
             [Required] string Email,
             [Required] string Password
             );

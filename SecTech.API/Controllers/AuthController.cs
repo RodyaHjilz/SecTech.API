@@ -26,7 +26,7 @@ namespace SecTech.API.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpPost("login")]
-        public async Task<ActionResult<BaseResult<Token>>> Login([FromBody] LoginUserDto user)
+        public async Task<ActionResult<BaseResult<Token>>> Login([FromBody] AuthUserDto user)
         {
             var token = await _userService.Login(user.Email, user.Password);
             if (token.IsSuccess)
@@ -43,7 +43,7 @@ namespace SecTech.API.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost("register")]
-        public async Task<ActionResult<BaseResult<RegisterUserDto>>> Register([FromBody] RegisterUserDto user)
+        public async Task<ActionResult<BaseResult>> Register([FromBody] AuthUserDto user)
         {
             var response = await _userService.Register(user.Email, user.Password);
             if (response.IsSuccess)

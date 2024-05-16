@@ -77,7 +77,7 @@ namespace SecTech.Application.Services
             {
                 var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Email == email);
                 if (user != null)
-                    return new BaseResult<User> { Data = user, ErrorMessage = "User are already exists" };
+                    return new BaseResult<User> { ErrorMessage = "User is already exists" };
 
                 user = new User()
                 {
