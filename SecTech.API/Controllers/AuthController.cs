@@ -11,6 +11,7 @@ namespace SecTech.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -43,7 +44,7 @@ namespace SecTech.API.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost("register")]
-        public async Task<ActionResult<BaseResult>> Register([FromBody] AuthUserDto user)
+        public async Task<ActionResult<BaseResult<User>>> Register([FromBody] AuthUserDto user)
         {
             var response = await _userService.Register(user.Email, user.Password);
             if (response.IsSuccess)
@@ -51,23 +52,6 @@ namespace SecTech.API.Controllers
 
             return BadRequest(response);
         }
-
-
-        /// <summary>
-        /// Инфо об авторизированном пользователе (Не нужно)
-        /// </summary>
-        /// <returns></returns>
-        [Authorize]
-        [HttpGet("info")]
-        public async Task<ActionResult> GetUserInfo()
-        {
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var email = User.FindFirstValue(ClaimTypes.Email);
-            var List = new List<string> { id, email };
-            return Ok(List);
-            
-        }
-
 
     }
 }

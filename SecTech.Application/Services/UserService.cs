@@ -40,7 +40,7 @@ namespace SecTech.Application.Services
 
                 // TODO: Проверка пароля
 
-                var claims = new List<Claim> { 
+                var claims = new List<Claim> {
                     new Claim(ClaimTypes.Email, email),
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Role, "User"),
@@ -70,6 +70,7 @@ namespace SecTech.Application.Services
                 return new BaseResult<Token>() { ErrorMessage = ex.Message };
             }
         }
+
         // TODO: Добавить хеширование пароля
         public async Task<BaseResult<User>> Register(string email, string password)
         {

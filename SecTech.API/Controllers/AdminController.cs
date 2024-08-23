@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SecTech.Application.Services;
 using SecTech.Domain.Dto.Event;
 using SecTech.Domain.Dto.Group;
 using SecTech.Domain.Dto.User;
-using SecTech.Domain.Entity;
 using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
 
@@ -20,15 +17,18 @@ namespace SecTech.API.Controllers
         private readonly IUserService _userService;
         private readonly IGroupService _groupService;
         private readonly IAttendanceService _attendanceService;
+        private readonly ILogger<AdminController> _logger;
         public AdminController(IEventService eventService,
                                IUserService userService,
                                IGroupService groupService,
-                               IAttendanceService attendanceService)
+                               IAttendanceService attendanceService,
+                               ILogger<AdminController> logger)
         {
             _eventService = eventService;
             _userService = userService;
             _groupService = groupService;
             _attendanceService = attendanceService;
+            _logger = logger;
         }
 
 
@@ -44,7 +44,6 @@ namespace SecTech.API.Controllers
             if (response.IsSuccess)
                 return Ok(response);
             return BadRequest(response);
-            
         }
 
         /// <summary>
@@ -83,7 +82,6 @@ namespace SecTech.API.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [HttpPost("event")]
-        [Authorize]
         public async Task<ActionResult<BaseResult<IEnumerable<AttendedUserDto>>>> GetUserAttendances(Guid eventId)
         {
             var response = await _attendanceService.GetEventAttendancesAsync(eventId);
@@ -93,7 +91,18 @@ namespace SecTech.API.Controllers
             return BadRequest(response);
 
         }
-
+        /// <summary>
+        /// Возврат списка всех групп из БД
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("getgroups")]
+        public async Task<ActionResult<BaseResult<IEnumerable<UGroupDto>>>> GetUGroups()
+        {
+            var response = await _groupService.GetGroups();
+            if(response.IsSuccess)
+                return Ok(response);
+            return BadRequest(response);
+        }
 
     }
 }

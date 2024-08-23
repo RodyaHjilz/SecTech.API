@@ -9,5 +9,8 @@ namespace SecTech.Domain.Interfaces.Services
     {
         Task<BaseResult<UGroupDto>> CreateGroup(UGroupDto group);
         Task<BaseResult<UGroupDto>> AddUserToGroup(string userEmail, string groupName);
+
+        Task<BaseResult<IEnumerable<UGroupDto>>> GetGroups();
+
     }
 }
