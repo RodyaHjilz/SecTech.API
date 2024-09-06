@@ -1,0 +1,6 @@
+@SecTech.Monitoring_HostAddress = http://localhost:5236
+
+GET {{SecTech.Monitoring_HostAddress}}/healthchecks-ui/
+Accept: application/json
+
+###

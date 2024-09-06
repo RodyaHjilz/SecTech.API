@@ -18,11 +18,15 @@ namespace SecTech.API.Controllers
     {
         private readonly IAttendanceService _attendanceService;
         private readonly IQRCodeService _qRCodeService;
+        private readonly ILogger<AttendanceController> _logger;
 
-        public AttendanceController(IAttendanceService attendanceService, IQRCodeService qRCodeService)
+        public AttendanceController(IAttendanceService attendanceService,
+                                    IQRCodeService qRCodeService,
+                                    ILogger<AttendanceController> logger)
         {
             _attendanceService = attendanceService;
             _qRCodeService = qRCodeService;
+            _logger = logger;
         }
 
         /// <summary>

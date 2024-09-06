@@ -1,6 +1,8 @@
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SecTech.Application;
@@ -8,10 +10,8 @@ using SecTech.DAL.Infrastructure.DependencyInjection;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "Simple QR-code secure system",
-        Description = "Пример ASP .NET Core Web API",
+        Description = "Пет-проект для МКБ",
         Contact = new OpenApiContact
         {
             Name = "tg: @bobach4",
@@ -36,6 +36,12 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDataAccessLayer();
 builder.Services.AddServices();
 builder.Services.AddAuthorization();
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    .AddCheck("self", () => HealthCheckResult.Healthy("Server is working"))
+    .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 500, name: "memory")
+    .AddDiskStorageHealthCheck(setup => setup.AddDrive("C:\\", minimumFreeMegabytes: 1000), name: "disk_storage");
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddCookie(x => x.Cookie.Name = "token")
     .AddJwtBearer(options =>
     {
@@ -54,7 +60,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddCo
             // установка ключа безопасности
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mysupersecret_secretsecretsecretkey!123")),
             // валидация ключа безопасности
-             ValidateIssuerSigningKey = true,
+            ValidateIssuerSigningKey = true,
         };
 
         options.Events = new JwtBearerEvents
@@ -89,12 +95,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();

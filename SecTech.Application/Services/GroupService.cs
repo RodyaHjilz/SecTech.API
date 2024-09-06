@@ -104,7 +104,7 @@ namespace SecTech.Application.Services
                 {
                     Name = x.Name,
                     Description = x.Description,
-                    UserEmails = x.Users.Select(x=>x.Email).ToList()
+                    UserEmails = x.Users.Select(x=>x.Email).ToList() ?? Enumerable.Empty<string?>().ToList()
                 }).ToListAsync();
 
                 _logger.LogDebug($"Service found {groups.Count} groups");
