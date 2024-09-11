@@ -26,6 +26,9 @@ namespace SecTech.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("getevent")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<BaseResult<Event>>> GetEventById(Guid eventId)
         {
             var response = await _eventService.GetEventByIdAsync(eventId);

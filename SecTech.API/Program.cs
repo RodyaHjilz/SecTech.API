@@ -1,18 +1,16 @@
 using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SecTech.Application;
 using SecTech.DAL.Infrastructure.DependencyInjection;
-using System.Text;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-builder.Logging.SetMinimumLevel(LogLevel.Debug); // Минимальный уровень логгирования
+builder.Logging.AddDebug();
+// builder.Logging.SetMinimumLevel(LogLevel.Debug); // Минимальный уровень логгирования
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -45,37 +43,7 @@ builder.Services.AddHealthChecks()
     .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 500, name: "memory")
     .AddDiskStorageHealthCheck(setup => setup.AddDrive("C:\\", minimumFreeMegabytes: 1000), name: "disk_storage");
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddCookie(x => x.Cookie.Name = "token")
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            // указывает, будет ли валидироваться издатель при валидации токена
-            ValidateIssuer = true,
-            // строка, представляющая издателя
-            ValidIssuer = "SecTech",            
-            // будет ли валидироваться потребитель токена
-            ValidateAudience = true,
-            // установка потребителя токена
-            ValidAudience = "SecTech",
-            // будет ли валидироваться время существования
-            ValidateLifetime = true,
-            // установка ключа безопасности
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mysupersecret_secretsecretsecretkey!123")),
-            // валидация ключа безопасности
-            ValidateIssuerSigningKey = true,
-        };
-
-        options.Events = new JwtBearerEvents
-        {
-           OnMessageReceived = context =>
-           {
-               context.Token = context.Request.Cookies["token"];
-               return Task.CompletedTask;
-           }
-        };
-
-    });
+builder.Services.AddJwtAuthentication();
 
 
 builder.Services.AddCors(options =>
@@ -90,7 +58,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 app.UseCors();
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

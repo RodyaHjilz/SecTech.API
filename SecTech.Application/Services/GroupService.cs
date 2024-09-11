@@ -85,13 +85,16 @@ namespace SecTech.Application.Services
                     Users = userList
                 });
 
-                
+                _logger.LogInformation($"Service created group {newGroup.Name}");
 
                 return new BaseResult<UGroupDto> { Data = group };
             }
             catch (Exception ex)
             {
+                _logger.LogError($"CreateGroup throw exception: {ex.Message}");
                 return new BaseResult<UGroupDto> { ErrorMessage = ex.Message };
+
+
             }
         }
 
@@ -107,7 +110,7 @@ namespace SecTech.Application.Services
                     UserEmails = x.Users.Select(x=>x.Email).ToList() ?? Enumerable.Empty<string?>().ToList()
                 }).ToListAsync();
 
-                _logger.LogDebug($"Service found {groups.Count} groups");
+                _logger.LogInformation($"Service found {groups.Count} groups");
                 return new BaseResult<IEnumerable<UGroupDto>>() { Data = groups };
 
             }

@@ -28,7 +28,7 @@ namespace SecTech.Tests.Services
             var eventId = Guid.NewGuid();
 
             // Act
-            var qrCodeUrl = _qrCodeService.GenerateQRCode(eventId);
+            var qrCodeUrl = _qrCodeService.GenerateQRCodeAsync(eventId);
 
             // Assert
             Assert.NotNull(qrCodeUrl);
@@ -40,7 +40,7 @@ namespace SecTech.Tests.Services
         {
             // Arrange
             var eventId = Guid.NewGuid();
-            var qrCodeUrl = _qrCodeService.GenerateQRCode(eventId);
+            var qrCodeUrl = _qrCodeService.GenerateQRCodeAsync(eventId);
             var tokenString = qrCodeUrl.Split('/').Last();
 
             // Act
@@ -59,7 +59,7 @@ namespace SecTech.Tests.Services
             var invalidToken = "invalidtoken";
 
             // Act
-            var result = _qrCodeService.DecodeQRCode(invalidToken);
+            var result = _qrCodeService.DecodeQRCodeAsync(invalidToken);
 
             // Assert
             Assert.NotNull(result);
