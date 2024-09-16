@@ -90,7 +90,7 @@ namespace SecTech.API.Controllers
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
-        [HttpPost("event")]
+        [HttpGet("event")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -108,7 +108,7 @@ namespace SecTech.API.Controllers
         /// Возврат списка всех групп из БД
         /// </summary>
         /// <returns></returns>
-        [HttpPost("getgroups")]
+        [HttpGet("groups")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
