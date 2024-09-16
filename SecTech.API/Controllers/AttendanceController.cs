@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SecTech.Domain.Dto.Event;
 using SecTech.Domain.Dto.User;
 using SecTech.Domain.Entity;
+using SecTech.Domain.Enums;
 using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
 using System.Security.Claims;
@@ -19,7 +20,9 @@ namespace SecTech.API.Controllers
         private readonly IAttendanceService _attendanceService;
         private readonly IQRCodeService _qRCodeService;
 
-        public AttendanceController(IAttendanceService attendanceService, IQRCodeService qRCodeService)
+        public AttendanceController(IAttendanceService attendanceService,
+                                    IQRCodeService qRCodeService,
+                                    ILogger<AttendanceController> logger)
         {
             _attendanceService = attendanceService;
             _qRCodeService = qRCodeService;
@@ -32,9 +35,13 @@ namespace SecTech.API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<BaseResult<string>>> GenerateQR(Guid eventId)
         {
-            var response = _qRCodeService.GenerateQRCode(eventId);
+            var response = _qRCodeService.GenerateQRCodeAsync(eventId);
             return Ok(response);
         }
 
@@ -44,9 +51,12 @@ namespace SecTech.API.Controllers
         /// <param name="token"></param>
         /// <returns></returns>
         [HttpGet("checkin/{token}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<BaseResult<Attendance>>> CheckIn(string token)
         {
-            var decodeToken = _qRCodeService.DecodeQRCode(token);
+            var decodeToken = _qRCodeService.DecodeQRCodeAsync(token);
             if (decodeToken.IsSuccess)
             {
                 Guid userId;
@@ -65,6 +75,9 @@ namespace SecTech.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("user")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<BaseResult<IEnumerable<AttendedEventDto>>>> GetUserAttendances()
         {
             Guid userId;

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SecTech.Domain.Dto.Event;
 using SecTech.Domain.Entity;
@@ -10,6 +9,7 @@ namespace SecTech.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EventController : ControllerBase
     {
         private readonly IEventService _eventService;
@@ -26,6 +26,9 @@ namespace SecTech.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("getevent")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<BaseResult<Event>>> GetEventById(Guid eventId)
         {
             var response = await _eventService.GetEventByIdAsync(eventId);

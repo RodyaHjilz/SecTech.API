@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SecTech.DAL;
 using SecTech.DAL.Migrations;
 using SecTech.DAL.Repositories;
@@ -16,11 +17,14 @@ namespace SecTech.Application.Services
     {
         private readonly IBaseRepository<UGroup> _groupRepository;
         private readonly IBaseRepository<User> _userRepository;
+        private readonly ILogger<GroupService> _logger;
         public GroupService(IBaseRepository<UGroup> groupRepository,
-                            IBaseRepository<User> userRepository)
+                            IBaseRepository<User> userRepository,
+                            ILogger<GroupService> logger)
         {
             _groupRepository = groupRepository;
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         public async Task<BaseResult<UGroupDto>> AddUserToGroup(string userEmail, string groupName)
@@ -81,14 +85,43 @@ namespace SecTech.Application.Services
                     Users = userList
                 });
 
-                
+                _logger.LogInformation($"Service created group {newGroup.Name}");
 
                 return new BaseResult<UGroupDto> { Data = group };
             }
             catch (Exception ex)
             {
+                _logger.LogError($"CreateGroup throw exception: {ex.Message}");
                 return new BaseResult<UGroupDto> { ErrorMessage = ex.Message };
+
+
             }
         }
+
+
+        public async Task<BaseResult<IEnumerable<UGroupDto>>> GetGroups()
+        {
+            try
+            {
+                var groups = await _groupRepository.GetAll().Select(x => new UGroupDto()
+                {
+                    Name = x.Name,
+                    Description = x.Description,
+                    UserEmails = x.Users.Select(x=>x.Email).ToList() ?? Enumerable.Empty<string?>().ToList()
+                }).ToListAsync();
+
+                _logger.LogInformation($"Service found {groups.Count} groups");
+                return new BaseResult<IEnumerable<UGroupDto>>() { Data = groups };
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"GetGroups throw exception: {ex.Message}");
+                return new BaseResult<IEnumerable<UGroupDto>> { ErrorMessage = ex.Message };
+                
+            }
+        }
+
+
     }
 }

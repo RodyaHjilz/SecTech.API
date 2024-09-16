@@ -1,17 +1,18 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.IdentityModel.Tokens;
+using HealthChecks.UI.Client;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using SecTech.Application;
 using SecTech.DAL.Infrastructure.DependencyInjection;
-using System.Text;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+// builder.Logging.SetMinimumLevel(LogLevel.Debug); // Минимальный уровень логгирования
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -19,7 +20,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "Simple QR-code secure system",
-        Description = "Пример ASP .NET Core Web API",
+        Description = "Пет-проект для МКБ",
         Contact = new OpenApiContact
         {
             Name = "tg: @bobach4",
@@ -36,37 +37,13 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDataAccessLayer();
 builder.Services.AddServices();
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddCookie(x => x.Cookie.Name = "token")
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            // указывает, будет ли валидироваться издатель при валидации токена
-            ValidateIssuer = true,
-            // строка, представляющая издателя
-            ValidIssuer = "SecTech",            
-            // будет ли валидироваться потребитель токена
-            ValidateAudience = true,
-            // установка потребителя токена
-            ValidAudience = "SecTech",
-            // будет ли валидироваться время существования
-            ValidateLifetime = true,
-            // установка ключа безопасности
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mysupersecret_secretsecretsecretkey!123")),
-            // валидация ключа безопасности
-             ValidateIssuerSigningKey = true,
-        };
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    .AddCheck("self", () => HealthCheckResult.Healthy("Server is working"))
+    .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 500, name: "memory")
+    .AddDiskStorageHealthCheck(setup => setup.AddDrive("C:\\", minimumFreeMegabytes: 1000), name: "disk_storage");
 
-        options.Events = new JwtBearerEvents
-        {
-           OnMessageReceived = context =>
-           {
-               context.Token = context.Request.Cookies["token"];
-               return Task.CompletedTask;
-           }
-        };
-
-    });
+builder.Services.AddJwtAuthentication();
 
 
 builder.Services.AddCors(options =>
@@ -81,7 +58,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 app.UseCors();
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -89,12 +66,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();

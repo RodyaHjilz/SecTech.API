@@ -26,6 +26,8 @@ namespace SecTech.API.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<BaseResult<Token>>> Login([FromBody] AuthUserDto user)
         {
             var token = await _userService.Login(user.Email, user.Password);
@@ -43,7 +45,9 @@ namespace SecTech.API.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost("register")]
-        public async Task<ActionResult<BaseResult>> Register([FromBody] AuthUserDto user)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<BaseResult<User>>> Register([FromBody] AuthUserDto user)
         {
             var response = await _userService.Register(user.Email, user.Password);
             if (response.IsSuccess)
@@ -51,23 +55,6 @@ namespace SecTech.API.Controllers
 
             return BadRequest(response);
         }
-
-
-        /// <summary>
-        /// Инфо об авторизированном пользователе (Не нужно)
-        /// </summary>
-        /// <returns></returns>
-        [Authorize]
-        [HttpGet("info")]
-        public async Task<ActionResult> GetUserInfo()
-        {
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var email = User.FindFirstValue(ClaimTypes.Email);
-            var List = new List<string> { id, email };
-            return Ok(List);
-            
-        }
-
 
     }
 }

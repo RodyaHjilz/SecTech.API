@@ -1,4 +1,6 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,7 +11,17 @@ namespace SecTech.Application.Services
 {
     public class QRCodeService : IQRCodeService
     {
-        public BaseResult<Guid> DecodeQRCode(string tokenString)
+        private readonly ILogger<QRCodeService> _logger;
+        private readonly IEventService _eventService;
+        private readonly string _secretKey;
+
+        public QRCodeService(ILogger<QRCodeService> logger, IEventService eventService)
+        {
+            _logger = logger;
+            _eventService = eventService;
+        }
+
+        public BaseResult<Guid> DecodeQRCodeAsync(string tokenString)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("supersecretkeyyoooufhdshfsdh36761278fdshsdjfsa46");
@@ -40,11 +52,12 @@ namespace SecTech.Application.Services
             }
             catch(Exception e)
             {
+                _logger.LogError(e, $"Error decoding QRCode with token {tokenString}");
                 return new BaseResult<Guid>() { ErrorMessage = e.Message };
             }
         }
 
-        public string GenerateQRCode(Guid eventId)
+        public string GenerateQRCodeAsync(Guid eventId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("supersecretkeyyoooufhdshfsdh36761278fdshsdjfsa46");
