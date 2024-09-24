@@ -1,15 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SecTech.Domain.Dto.Attendance;
 using SecTech.Domain.Dto.Event;
 using SecTech.Domain.Entity;
 using SecTech.Domain.Interfaces.Repositories;
 using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SecTech.Application.Services
 {
@@ -62,13 +57,31 @@ namespace SecTech.Application.Services
             }
         }
 
-        public async Task<BaseResult<Event>> GetEventByIdAsync(Guid id)
+        public async Task<BaseResult<EventDto>> GetEventByIdAsync(Guid id)
         {
-            var evnt = await _eventRepository.GetAll().FirstOrDefaultAsync(e => e.Id == id);
+            var evnt = await _eventRepository.GetAll()
+                .Include(x => x.Attendances)
+                .ThenInclude(x => x.User)
+                .FirstOrDefaultAsync(e => e.Id == id);
             if (evnt == null)
-                return new BaseResult<Event>() { ErrorMessage = $"Event with id {id} not found" };
+                return new BaseResult<EventDto>() { ErrorMessage = $"Event with id {id} not found" };
 
-            return new BaseResult<Event>() { Data = evnt };
+            var eventDto = new EventDto
+            {
+                Name = evnt.Name,
+                Description = evnt.Description,
+                Address = evnt.Address,
+                Type = evnt.Type,
+                EventTimeEnd = evnt.EventTimeEnd,
+                EventTimeStart = evnt.EventTimeStart,
+                Attendances = evnt.Attendances.Select(a => new AttendanceDto
+                {
+                    UserName = a.User.FirstName + " " + a.User.LastName,
+                    CheckInTime = a.CheckInTime
+                }).ToList()
+               
+            };
+            return new BaseResult<EventDto>() { Data = eventDto };
 
         }
     }

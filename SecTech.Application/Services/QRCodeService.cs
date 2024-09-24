@@ -44,13 +44,13 @@ namespace SecTech.Application.Services
 
                 var eventId = Guid.Parse(eventIdClaim.Value);
                 var expiry = jwtToken.ValidTo;
-                if(expiry < DateTime.UtcNow) { return new BaseResult<Guid>() { ErrorMessage = "QRCode expires" }; }
+                if(expiry < DateTime.UtcNow) { return new BaseResult<Guid>() { ErrorMessage = "QRCode expires", ErrorCode = 410 }; }
 
                 return new BaseResult<Guid>() { Data = eventId };
             }
             catch(Exception e)
             {
-                _logger.LogError(e, $"Error decoding QRCode with token {tokenString}");
+                _logger.LogError(e, "Error decoding QRCode with token {tokenString}", tokenString);
                 return new BaseResult<Guid>() { ErrorMessage = e.Message };
             }
         }

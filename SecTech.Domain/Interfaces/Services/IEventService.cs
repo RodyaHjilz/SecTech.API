@@ -13,7 +13,7 @@ namespace SecTech.Domain.Interfaces.Services
     {
         public Task<BaseResult<Event>> CreateEventAsync(CreateEventDto eventDto);
 
-        public Task<BaseResult<Event>> GetEventByIdAsync(Guid id);
+        public Task<BaseResult<EventDto>> GetEventByIdAsync(Guid id);
 
         public Task<BaseResult> DeleteEventAsync(Guid id);
 

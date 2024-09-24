@@ -103,7 +103,8 @@ namespace SecTech.Application.Services
                     Id = x.UserId,
                     Name = (x.User.FirstName != null) ? x.User.FirstName + x.User.LastName : "Без имени",
                     Email = x.User.Email,
-                    PhoneNumber = x.User.PhoneNumber != null ? x.User.PhoneNumber : "Без номера телефона"
+                    PhoneNumber = x.User.PhoneNumber != null ? x.User.PhoneNumber : "Без номера телефона",
+                    CheckInTime = x.CheckInTime
                 });
                 
                 return new BaseResult<IEnumerable<AttendedUserDto>>() { Data = users };

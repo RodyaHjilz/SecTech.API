@@ -12,5 +12,8 @@ namespace SecTech.Domain.Dto.User
         public string? Name { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
+        public DateTime CheckInTime { get; set; }
+
+        
     }
 }
