@@ -28,6 +28,7 @@ namespace SecTech.API.Controllers
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<BaseResult<Token>>> Login([FromBody] AuthUserDto user)
         {
             var token = await _userService.Login(user.Email, user.Password);
@@ -36,7 +37,7 @@ namespace SecTech.API.Controllers
                 HttpContext.Response.Cookies.Append("token", token.Data.AccessToken);
                 return Ok(token);
             }
-            return BadRequest(token);
+            return StatusCode(500, token);
         }
 
         /// <summary>
@@ -47,13 +48,14 @@ namespace SecTech.API.Controllers
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<BaseResult<User>>> Register([FromBody] AuthUserDto user)
         {
             var response = await _userService.Register(user.Email, user.Password);
             if (response.IsSuccess)
                 return Ok(response);
 
-            return BadRequest(response);
+            return StatusCode(500, response);
         }
 
     }

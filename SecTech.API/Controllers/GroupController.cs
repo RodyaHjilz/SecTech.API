@@ -33,7 +33,7 @@ namespace SecTech.API.Controllers
             var response = await _groupService.CreateGroup(dto);
             if (response.IsSuccess)
                 return Ok(response);
-            return BadRequest(response);
+            return StatusCode(500, response);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace SecTech.API.Controllers
             var response = await _groupService.GetGroups();
             if (response.IsSuccess)
                 return Ok(response);
-            return BadRequest(response);
+            return StatusCode(500, response);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace SecTech.API.Controllers
             var response = await _groupService.AddUserToGroup(dto.email, dto.groupName);
             if (response.IsSuccess)
                 return Ok(response);
-            return BadRequest(response);
+            return StatusCode(500, response);
         }
 
 

@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SecTech.Domain.Dto.Event;
 using SecTech.Domain.Dto.User;
 using SecTech.Domain.Entity;
-using SecTech.Domain.Enums;
 using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
 using System.Security.Claims;
@@ -53,7 +51,7 @@ namespace SecTech.API.Controllers
         [HttpGet("checkin/{token}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<BaseResult<Attendance>>> CheckIn(string token)
         {
             var decodeToken = _qRCodeService.DecodeQRCode(token);
@@ -65,9 +63,9 @@ namespace SecTech.API.Controllers
                 if (response.IsSuccess)
                     return Ok(response);
 
-                return BadRequest(response);
+                return StatusCode(500, response);
             }
-            return BadRequest(decodeToken);
+            return StatusCode(500, decodeToken);
         }
 
         /// <summary>
@@ -77,7 +75,7 @@ namespace SecTech.API.Controllers
         [HttpGet("user")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<BaseResult<IEnumerable<AttendedEventDto>>>> GetUserAttendances()
         {
             Guid userId;
@@ -86,7 +84,7 @@ namespace SecTech.API.Controllers
             if (response.IsSuccess)
                 return Ok(response);
 
-            return BadRequest(response);
+            return StatusCode(500, response);
 
         }
 
@@ -99,15 +97,16 @@ namespace SecTech.API.Controllers
         [HttpGet("{eventId}/users")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<BaseResult<IEnumerable<AttendedUserDto>>>> GetUserAttendances(Guid eventId)
         {
             var response = await _attendanceService.GetEventAttendancesAsync(eventId);
             if (response.IsSuccess)
                 return Ok(response);
 
-            return BadRequest(response);
+            return StatusCode(500, response);
 
         }
 

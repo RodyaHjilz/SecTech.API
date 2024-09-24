@@ -36,7 +36,7 @@ namespace SecTech.API.Controllers
             var response = await _eventService.GetEventByIdAsync(eventId);
             if(response.IsSuccess)
                 return Ok(response);
-            return BadRequest(response);
+            return StatusCode(500, response);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SecTech.API.Controllers
             if (response.IsSuccess)
                 return Ok(response);
 
-            return BadRequest(response);
+            return StatusCode(500, response);
         }
 
 
