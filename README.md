@@ -12,4 +12,5 @@ Clean Architecture
 - EntityFramework Core
 - JWT
 - MS SQL
-- LINQ 
+- LINQ
+- HealthChecks
