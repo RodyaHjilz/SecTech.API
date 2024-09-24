@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using SecTech.Application.Services;
+using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
 using Xunit;
 
@@ -14,7 +15,7 @@ namespace SecTech.Tests.Services
     {
         private readonly Mock<ILogger<QRCodeService>> _mockLogger;
         private readonly QRCodeService _qrCodeService;
-
+        private readonly Mock<IEventService> _eventService;
         public QRCodeServiceTests()
         {
             _mockLogger = new Mock<ILogger<QRCodeService>>();
@@ -28,7 +29,7 @@ namespace SecTech.Tests.Services
             var eventId = Guid.NewGuid();
 
             // Act
-            var qrCodeUrl = _qrCodeService.GenerateQRCodeAsync(eventId);
+            var qrCodeUrl = _qrCodeService.GenerateQRCode(eventId);
 
             // Assert
             Assert.NotNull(qrCodeUrl);
@@ -40,7 +41,7 @@ namespace SecTech.Tests.Services
         {
             // Arrange
             var eventId = Guid.NewGuid();
-            var qrCodeUrl = _qrCodeService.GenerateQRCodeAsync(eventId);
+            var qrCodeUrl = _qrCodeService.GenerateQRCode(eventId);
             var tokenString = qrCodeUrl.Split('/').Last();
 
             // Act
@@ -59,7 +60,7 @@ namespace SecTech.Tests.Services
             var invalidToken = "invalidtoken";
 
             // Act
-            var result = _qrCodeService.DecodeQRCodeAsync(invalidToken);
+            var result = _qrCodeService.DecodeQRCode(invalidToken);
 
             // Assert
             Assert.NotNull(result);

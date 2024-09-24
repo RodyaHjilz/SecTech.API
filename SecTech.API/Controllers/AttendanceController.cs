@@ -41,7 +41,7 @@ namespace SecTech.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<ActionResult<BaseResult<string>>> GenerateQR(Guid eventId)
         {
-            var response = _qRCodeService.GenerateQRCodeAsync(eventId);
+            var response = _qRCodeService.GenerateQRCode(eventId);
             return Ok(response);
         }
 
@@ -56,7 +56,7 @@ namespace SecTech.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<BaseResult<Attendance>>> CheckIn(string token)
         {
-            var decodeToken = _qRCodeService.DecodeQRCodeAsync(token);
+            var decodeToken = _qRCodeService.DecodeQRCode(token);
             if (decodeToken.IsSuccess)
             {
                 Guid userId;

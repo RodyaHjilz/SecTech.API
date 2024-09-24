@@ -9,7 +9,7 @@ namespace SecTech.Domain.Interfaces.Services
 {
     public interface IQRCodeService
     {
-        string GenerateQRCodeAsync(Guid eventId);
-        BaseResult<Guid> DecodeQRCodeAsync(string tokenString);
+        string GenerateQRCode(Guid eventId);
+        BaseResult<Guid> DecodeQRCode(string tokenString);
     }
 }

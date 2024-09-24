@@ -12,16 +12,14 @@ namespace SecTech.Application.Services
     public class QRCodeService : IQRCodeService
     {
         private readonly ILogger<QRCodeService> _logger;
-        private readonly IEventService _eventService;
         private readonly string _secretKey;
 
-        public QRCodeService(ILogger<QRCodeService> logger, IEventService eventService)
+        public QRCodeService(ILogger<QRCodeService> logger)
         {
             _logger = logger;
-            _eventService = eventService;
         }
 
-        public BaseResult<Guid> DecodeQRCodeAsync(string tokenString)
+        public BaseResult<Guid> DecodeQRCode(string tokenString)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("supersecretkeyyoooufhdshfsdh36761278fdshsdjfsa46");
@@ -57,7 +55,7 @@ namespace SecTech.Application.Services
             }
         }
 
-        public string GenerateQRCodeAsync(Guid eventId)
+        public string GenerateQRCode(Guid eventId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("supersecretkeyyoooufhdshfsdh36761278fdshsdjfsa46");
