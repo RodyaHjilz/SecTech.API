@@ -1,6 +1,7 @@
 using HealthChecks.UI.Client;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using RabbitMQ.Client;
 using SecTech.Application;
 using SecTech.DAL.Infrastructure.DependencyInjection;
 
@@ -44,7 +45,18 @@ builder.Services.AddHealthChecks()
     .AddDiskStorageHealthCheck(setup => setup.AddDrive("C:\\", minimumFreeMegabytes: 1000), name: "disk_storage");
 
 builder.Services.AddJwtAuthentication();
+// Начало внедрения кролика
+// Лучше всего не запускать консьюмеры прямо в приложении???
+builder.Services.AddSingleton<IConnectionFactory>(sp => new ConnectionFactory
+{
+    Endpoint = new AmqpTcpEndpoint(),
+    DispatchConsumersAsync = true
+});
 
+builder.Services.AddHostedService<EventEngineListener>();
+
+
+// Конец внедрения кролика
 
 builder.Services.AddCors(options =>
 {

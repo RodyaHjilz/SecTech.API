@@ -1,0 +1,184 @@
+[33mcommit 703107ded937977ef8b9a1d7165f072560c98af7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/add-rabbitmq[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: RodyaHjilz <abit.radmir@mail.ru>
+Date:   Tue Sep 24 15:42:44 2024 +0300
+
+    fix producesstatuscodes
+
+[33mcommit 2eca4fbae418c5485c629875fa43241aa7a08848[m
+Merge: 1c407d5 b1c40e6
+Author: RodyaHjilz <abit.radmir@mail.ru>
+Date:   Tue Sep 24 12:55:11 2024 +0300
+
+    Merge branch 'master' of https://github.com/RodyaHjilz/SecTech.API
+
+[33mcommit 1c407d51a8b7b9d1b6afa230cf4aacc816ce9747[m
+Author: RodyaHjilz <abit.radmir@mail.ru>
+Date:   Tue Sep 24 12:54:46 2024 +0300
+
+    fix endpoints, disbanded admincontroller because of REST
+
+[33mcommit 7e9fe56189af4d7aee909ef67f68984626d4b464[m
+Author: RodyaHjilz <abit.radmir@mail.ru>
+Date:   Tue Sep 24 11:18:52 2024 +0300
+
+    fix QRCodeService
+
+[33mcommit b1c40e6633df118002fbe3096935e07114420f35[m
+Author: Radmir <113127693+RodyaHjilz@users.noreply.github.com>
+Date:   Tue Sep 24 10:35:31 2024 +0300
+
+    Update README.md
+
+[33mcommit 541af689ce87cab4d42d302e67cd16988c4948bd[m
+Author: RodyaHjilz <abit.radmir@mail.ru>
+Date:   Mon Sep 16 12:06:32 2024 +0300
+
+    fix doc api
+
+[33mcommit 1af276f71c8b7bc8134ecfd336e7b8596f2ac6f8[m
+Merge: ba8d82e b1ca1c8
+Author: Radmir <113127693+RodyaHjilz@users.noreply.github.com>
+Date:   Mon Sep 16 11:57:19 2024 +0300
+
+    Merge pull request #3 from RodyaHjilz/develop
+    
+    unit tests+healthchecks
+
+[33mcommit b1ca1c813a1958065fcf43e50681ce398faee0a3[m[33m ([m[1;31morigin/develop[m[33m)[m
+Author: RodyaHjilz <abit.radmir@mail.ru>
+Date:   Wed Sep 11 22:53:26 2024 +0300
+
+    add attributes for swagger doc
+
+[33mcommit 16f54a8d8a5cfffef5047d93986131c0e371d7bc[m
+Author: RodyaHjilz <abit.radmir@mail.ru>
+Date:   Sun Sep 8 13:14:08 2024 +0300
+
+    add logger settings
+
+[33mcommit 5834598c89c88d01088a212143f89994e466b532[m
+Author: RodyaHjilz <abit.radmir@mail.ru>
+Date:   Fri Sep 6 14:15:27 2024 +0300
+
+    add monitoring microservice with healthchecks
+
+[33mcommit b732f2f74330698341a59a4f1651aefd4d76e1cc[m
+Author: RodyaHjilz <abit.radmir@mail.ru>
+Date:   Fri Aug 23 13:04:33 2024 +0300
+
+    add unit tests & logger
+
+[33mcommit ba8d82e3e0728d980d828f47079e12a86ddcc475[m
+Author: Radmir <113127693+RodyaHjilz@users.noreply.github.com>
+Date:   Thu May 16 15:09:59 2024 +0300
+
+    Update README.md
+
+[33mcommit f974c673f2690a1220cf2cd05d7423dbdf25c460[m
+Author: Radmir <113127693+RodyaHjilz@users.noreply.github.com>
+Date:   Thu May 16 15:08:09 2024 +0300
+
+    Update README.md
+
+[33mcommit 9bea717e6027f37e12db34e4a4e00c295d081bf6[m
+Author: Radmir <113127693+RodyaHjilz@users.noreply.github.com>
+Date:   Thu May 16 15:07:28 2024 +0300
+
+    Update README.md
+
+[33mcommit fa2756d519c3b6666018aaf1de4e6f84795e4f5a[m
+Author: Radmir <113127693+RodyaHjilz@users.noreply.github.com>
+Date:   Thu May 16 14:57:38 2024 +0300
+
+    Update README.md
+
+[33mcommit 6cd1cdd74a18ea69eae422719f110491e4547aa6[m
+Merge: 69a2c64 5f2d9e8
+Author: Radmir <113127693+RodyaHjilz@users.noreply.github.com>
+Date:   Thu May 16 14:48:07 2024 +0300
+
+    Merge pull request #2 from RodyaHjilz/develop
+    
+    add: Generate QR code which expires 20 seconds
+
+[33mcommit 5f2d9e87b8c08d1ce03d10236249090e4cd0db15[m
+Author: Радмир Разяпов <abit.radmir@mail.ru>
+Date:   Thu May 16 12:49:10 2024 +0300
+
+    add: Generate QR code which expires 20 seconds
+
+[33mcommit 69a2c641ee6643d616062045c8d7094fe92d6204[m
+Merge: a0b2840 9d8fddf
+Author: Radmir <113127693+RodyaHjilz@users.noreply.github.com>
+Date:   Mon May 6 23:27:37 2024 +0300
+
+    Merge pull request #1 from RodyaHjilz/develop
+    
+    fix: refactor code, fix groupservice
+
+[33mcommit 9d8fddfc322a4cea202db4a37be7cce387c9f0c9[m
+Author: Радмир Разяпов <abit.radmir@mail.ru>
+Date:   Mon May 6 23:24:33 2024 +0300
+
+    fix: refactor code, fix groupservice
+
+[33mcommit a0b2840d56515945a58e9beec978ab81e6c69ac3[m
+Author: Радмир Разяпов <abit.radmir@mail.ru>
+Date:   Sun May 5 00:01:06 2024 +0300
+
+    add: groups to every user
+
+[33mcommit 3c80dbff98749a0549be6710be4a0b561aca33a3[m
+Merge: 1f2307b 494ace5
+Author: Радмир Разяпов <abit.radmir@mail.ru>
+Date:   Tue Apr 30 11:40:07 2024 +0300
+
+    Merge branch 'master' of https://github.com/RodyaHjilz/SecTech.API
+
+[33mcommit 1f2307bcd68ffa1c0ba87d3882800db41b4741fb[m
+Author: Радмир Разяпов <abit.radmir@mail.ru>
+Date:   Tue Apr 30 11:39:37 2024 +0300
+
+    update: attendanceService logic
+
+[33mcommit 494ace5d3519457c95bd880ae4bf3dd5777df5f0[m
+Author: Radmir <113127693+RodyaHjilz@users.noreply.github.com>
+Date:   Sun Apr 21 19:03:18 2024 +0300
+
+    Create README.md
+
+[33mcommit fef67d5d98e4a113e920080ab90c5ae9e2f0a4bd[m
+Author: Радмир Разяпов <abit.radmir@mail.ru>
+Date:   Sun Apr 21 19:02:18 2024 +0300
+
+    add: documentation
+
+[33mcommit 576549cfd880168eab4e118c9431ed0312bcb5ab[m
+Author: Радмир Разяпов <abit.radmir@mail.ru>
+Date:   Mon Apr 8 09:45:43 2024 +0300
+
+    add: openAPI documentation
+
+[33mcommit 560b5cd37b9329c904fe1261ec232e977602f294[m
+Author: Радмир Разяпов <abit.radmir@mail.ru>
+Date:   Mon Apr 8 09:21:23 2024 +0300
+
+    add: jwt authentitication, authcontroller, attendancecontroller logic
+
+[33mcommit 686acff872b7dac5e839754d4e67355ba3dfb5e9[m
+Author: RodyaHjilz <abit.radmir@mail.ru>
+Date:   Mon Mar 25 21:55:37 2024 +0300
+
+    init repository
+
+[33mcommit 7f92c59a468c3aabfc339a4c7e4521def852d678[m
+Author: RodyaHjilz <abit.radmir@mail.ru>
+Date:   Thu Mar 21 14:48:26 2024 +0300
+
+    Добавьте файлы проекта.
+
+[33mcommit 7b5ed949714595b515f100e18be95f2d6798c50d[m
+Author: RodyaHjilz <abit.radmir@mail.ru>
+Date:   Thu Mar 21 14:48:23 2024 +0300
+
+    Добавить .gitattributes и .gitignore.
