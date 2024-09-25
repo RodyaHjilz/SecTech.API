@@ -6,11 +6,12 @@ using SecTech.DAL.Infrastructure.DependencyInjection;
 
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
-// builder.Logging.SetMinimumLevel(LogLevel.Debug); // Минимальный уровень логгирования
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -34,11 +35,11 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(xmlPath);
 
 });
-builder.Services.AddDataAccessLayer();
+builder.Services.AddDataAccessLayer(connectionString);
 builder.Services.AddServices();
 builder.Services.AddAuthorization();
 builder.Services.AddHealthChecks()
-    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    .AddSqlServer(connectionString)
     .AddCheck("self", () => HealthCheckResult.Healthy("Server is working"))
     .AddProcessAllocatedMemoryHealthCheck(maximumMegabytesAllocated: 500, name: "memory")
     .AddDiskStorageHealthCheck(setup => setup.AddDrive("C:\\", minimumFreeMegabytes: 1000), name: "disk_storage");
