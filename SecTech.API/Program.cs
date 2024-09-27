@@ -2,6 +2,7 @@ using HealthChecks.UI.Client;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
+using SecTech.API.RabbitMq;
 using SecTech.Application;
 using SecTech.DAL.Infrastructure.DependencyInjection;
 
@@ -46,14 +47,8 @@ builder.Services.AddHealthChecks()
 
 builder.Services.AddJwtAuthentication();
 // Начало внедрения кролика
-// Лучше всего не запускать консьюмеры прямо в приложении???
-builder.Services.AddSingleton<IConnectionFactory>(sp => new ConnectionFactory
-{
-    Endpoint = new AmqpTcpEndpoint(),
-    DispatchConsumersAsync = true
-});
 
-builder.Services.AddHostedService<EventEngineListener>();
+builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
 
 
 // Конец внедрения кролика

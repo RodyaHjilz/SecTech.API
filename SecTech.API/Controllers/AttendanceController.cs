@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SecTech.API.RabbitMq;
 using SecTech.Domain.Dto.Event;
 using SecTech.Domain.Dto.User;
 using SecTech.Domain.Entity;
@@ -17,13 +18,22 @@ namespace SecTech.API.Controllers
     {
         private readonly IAttendanceService _attendanceService;
         private readonly IQRCodeService _qRCodeService;
-
+        private readonly IRabbitMqService _rabbitMqService;
         public AttendanceController(IAttendanceService attendanceService,
                                     IQRCodeService qRCodeService,
-                                    ILogger<AttendanceController> logger)
+                                    IRabbitMqService rabbitMqService)
         {
             _attendanceService = attendanceService;
             _qRCodeService = qRCodeService;
+            _rabbitMqService = rabbitMqService;
+        }
+
+
+        [HttpGet("testrabbit")]
+        public ActionResult TestRabbit()
+        {
+            _rabbitMqService.SendMessage(new { Message = "Hello, World!", DateTime = DateTime.Now });
+            return Ok();
         }
 
         /// <summary>
