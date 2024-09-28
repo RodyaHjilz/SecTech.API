@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SecTech.API.RabbitMQ\SecTech.API.RabbitMQ.csproj" />
     <ProjectReference Include="..\SecTech.DAL\SecTech.DAL.csproj" />
     <ProjectReference Include="..\SecTech.Domain\SecTech.Domain.csproj" />
   </ItemGroup>

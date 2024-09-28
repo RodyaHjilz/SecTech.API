@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Text;
 

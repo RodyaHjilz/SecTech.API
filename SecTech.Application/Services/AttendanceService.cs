@@ -6,11 +6,8 @@ using SecTech.Domain.Interfaces.Repositories;
 using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
 using SecTech.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SecTech.API.RabbitMq;
+using Microsoft.Extensions.Logging;
 
 namespace SecTech.Application.Services
 {
@@ -19,11 +16,13 @@ namespace SecTech.Application.Services
         private readonly IBaseRepository<Attendance> _attendanceRepository;
         private readonly IBaseRepository<Event> _eventRepository;
         private readonly IBaseRepository<User> _userRepository;
-        public AttendanceService(IBaseRepository<Attendance> attendanceRepository, IBaseRepository<Event> eventRepository, IBaseRepository<User> userRepository)
+        private readonly IRabbitMqService _rabbitMqService;
+        public AttendanceService(IBaseRepository<Attendance> attendanceRepository, IBaseRepository<Event> eventRepository, IBaseRepository<User> userRepository, IRabbitMqService rabbitMqService)
         {
             _attendanceRepository = attendanceRepository;
             _eventRepository = eventRepository;
             _userRepository = userRepository;
+            _rabbitMqService = rabbitMqService;
         }
 
         public async Task<BaseResult<Attendance>> CheckInAsync(Guid userId, Guid eventId)
@@ -54,7 +53,7 @@ namespace SecTech.Application.Services
                         ErrorMessage = "User is already checked in"
                     };
                 }
-
+                
                 var attendance = new Attendance()
                 {
                     UserId = userId,
@@ -63,6 +62,15 @@ namespace SecTech.Application.Services
                 };
                 await _attendanceRepository.CreateAsync(attendance);
 
+                _rabbitMqService.SendMessage(new
+                {
+                    EventId = ev.Id,
+                    EventName = ev.Name,
+                    UserId = user.Id,
+                    UserName = user.FirstName + " " + user.LastName ?? "Без имени",
+                    CheckInTime = DateTime.UtcNow,
+                    isOnTime = DateTime.UtcNow >= ev.EventTimeStart && DateTime.UtcNow <= ev.EventTimeEnd
+                }); ;
                 return new BaseResult<Attendance>() { Data = attendance };
             }
             catch (Exception ex)

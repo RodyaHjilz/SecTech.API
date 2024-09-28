@@ -28,7 +28,10 @@ namespace SecTech.API.Controllers
             _rabbitMqService = rabbitMqService;
         }
 
-
+        /// <summary>
+        /// Тестовая ручка для отправки сообщения в RabbitMQ. Удалить позже
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("testrabbit")]
         public ActionResult TestRabbit()
         {
