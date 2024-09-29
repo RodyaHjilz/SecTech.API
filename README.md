@@ -14,3 +14,4 @@ Clean Architecture
 - MS SQL
 - LINQ
 - HealthChecks
+- RabbitMq
