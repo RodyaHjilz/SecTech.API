@@ -1,14 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SecTech.DAL;
-using SecTech.DAL.Migrations;
-using SecTech.DAL.Repositories;
 using SecTech.Domain.Dto.Group;
 using SecTech.Domain.Entity;
 using SecTech.Domain.Interfaces.Repositories;
 using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
-using System.Text.RegularExpressions;
 
 namespace SecTech.Application.Services
 {
@@ -93,8 +89,6 @@ namespace SecTech.Application.Services
             {
                 _logger.LogError($"CreateGroup throw exception: {ex.Message}");
                 return new BaseResult<UGroupDto> { ErrorMessage = ex.Message };
-
-
             }
         }
 

@@ -63,7 +63,7 @@ namespace SecTech.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult> AddGroupToUser([FromBody] AddGroupDto dto)
+        public async Task<ActionResult<BaseResult<UGroupDto>>> AddGroupToUser([FromBody] AddGroupDto dto)
         {
             var response = await _groupService.AddUserToGroup(dto.email, dto.groupName);
             if (response.IsSuccess)

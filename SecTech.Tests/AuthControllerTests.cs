@@ -1,14 +1,12 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Newtonsoft.Json.Linq;
 using SecTech.API.Controllers;
 using SecTech.Domain.Dto.User;
 using SecTech.Domain.Entity;
 using SecTech.Domain.Interfaces.Services;
 using SecTech.Domain.Result;
-using Xunit;
+
 
 namespace SecTech.Tests
 {
