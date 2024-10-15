@@ -70,7 +70,7 @@ namespace SecTech.Application.Services
                     UserName = user.FirstName + " " + user.LastName ?? "Без имени",
                     CheckInTime = DateTime.UtcNow,
                     isOnTime = DateTime.UtcNow >= ev.EventTimeStart && DateTime.UtcNow <= ev.EventTimeEnd
-                }); ;
+                });
                 return new BaseResult<Attendance>() { Data = attendance };
             }
             catch (Exception ex)
